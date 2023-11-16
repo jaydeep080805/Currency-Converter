@@ -20,8 +20,6 @@ class RealTimeCurrencyConverter:
 
     # Convert the given amount from one currency to another
     def convert(self, from_currency, to_currency, amount):
-        if not amount:
-            return None
         amount = float(amount) / self.currencies[from_currency]
         return round(amount * self.currencies[to_currency], 4)
 
@@ -142,6 +140,7 @@ class App(ctk.CTk):
             textvariable=self.from_amount,
         )
         self.from_entry_box.place(x=20, y=70)
+
         try:
             self.from_amount.trace("w", lambda *args: self.perform_conversion())
         except Exception as e:
@@ -212,7 +211,7 @@ class App(ctk.CTk):
         try:
             amount = float(self.from_amount.get())
         except ValueError:
-            return
+            amount = 0
 
         from_currency = self.from_variable.get()
         to_currency = self.to_variable.get()
