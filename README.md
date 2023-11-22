@@ -21,11 +21,11 @@ A real-time currency converter GUI application built using Python and the Tkinte
 ### How To Run Locally:
 - navigate to the directory you would like to use the app in
 - setup a virtual environment: 
--- ```python -m venv venv```
+  - ```python -m venv venv```
 - activate the virtual environment:
 - on windows:
--- venv/Scripts/activate
+  - ```venv/Scripts/activate```
 - on mac:
--- ```source venv/bin/activate```
+  - ```source venv/bin/activate```
 - install the dependencies ```pip install -r requirements.txt```
 - run the app ```python main.py```
