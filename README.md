@@ -28,4 +28,5 @@ A real-time currency converter GUI application built using Python and the Tkinte
 - on mac:
   - ```source venv/bin/activate```
 - install the dependencies ```pip install -r requirements.txt```
+- create a .env file with one variable "ACCESS_KEY" which is needed for http://api.exchangeratesapi.io/
 - run the app ```python main.py```
