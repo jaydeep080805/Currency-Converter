@@ -1,6 +1,6 @@
 # Currency Converter (Python, Tkinter, APIs)
 
-![Screenshot (106)](https://github.com/jaydeep080805/Currency-Converter/assets/64449369/d0535ca1-1faa-488c-9f94-a9a7060475a8)
+![Screenshot (106)](https://github.com/jaydeep080805/Currency-Converter/assets/64449369/68471a72-c673-4121-8dd9-4b129a5bc55f)
 
 A real-time currency converter GUI application built using Python and the Tkinter library. The application fetches currency conversion rates from an external API and allows users to convert an amount from one currency to another. Users can select the source currency, target currency, and enter the amount to be converted. The converted amount is displayed instantly on the screen. The application supports a range of currencies and ensures error handling for invalid input.
 
