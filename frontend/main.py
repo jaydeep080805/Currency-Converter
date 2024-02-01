@@ -4,20 +4,47 @@ from widgets import OptionMenu, EntryBox, Frame
 from settings import *
 import requests
 from currency_symbols import CurrencySymbols
+from time import sleep
+import sys
+import os
+from PIL import Image, ImageTk
+
+
+def resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 # This class handles real-time currency conversion
 class RealTimeCurrencyConverter:
-    def __init__(self, api_url):
+    def __init__(self, api_url, max_retries=3, retry_delay=1):
         self.api_url = api_url
-        try:
-            response = requests.get(f"{api_url}/rates")
-            response.raise_for_status()
-            data = response.json()
-            self.currencies = data["rates"]
-            self.currency_list = list(self.currencies.keys())
-        except Exception as e:
-            print(e)
+        self.max_retries = max_retries
+        self.retry_delay = retry_delay
+
+        for tries in range(self.max_retries):
+            try:
+                response = requests.get(f"{api_url}/rates", timeout=10)
+                response.raise_for_status()
+                data = response.json()
+                self.currencies = data["rates"]
+                self.currency_list = list(self.currencies.keys())
+                break
+            except Exception as e:
+                # messagebox.showerror("Error", f"Attempt {tries+1} api request failed")
+                sleep(self.retry_delay)
+        else:
+            messagebox.showerror(
+                "Error", "API is not responding. Please try again later."
+            )
+            self.currencies = {}
+            self.currency_list = []
 
     def convert(self, from_currency, to_currency, amount):
         try:
@@ -60,7 +87,22 @@ class App(ctk.CTk):
         self.geometry(f"{APP_WIDTH}x{APP_HEIGHT}+{int(x)}+{int(y)}")
         self.minsize(MIN_WIDTH, MIN_HEIGHT)
         self.resizable(False, False)
-        self.iconbitmap("dollar note.ico")
+
+        # Use resource_path to get the correct path for the icon
+        icon_path = resource_path("dollar note.ico")
+
+        try:
+            # mac's ):
+            if sys.platform == "darwin":
+                img = Image.open(icon_path)
+                photo = ImageTk.PhotoImage(img)
+                self.tk.call("wm", "iconphoto", self._w, photo)
+
+            else:
+                self.iconbitmap("dollar note.ico")
+
+        except Exception as e:
+            print(f"Error loading icon: {e}")
 
     # Create the UI widgets
     def create_widgets(self):
